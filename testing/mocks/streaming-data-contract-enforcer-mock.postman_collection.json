@@ -1,0 +1,167 @@
+{
+  "info" : {
+    "name" : "streaming-data-contract-enforcer Mock Test Collection",
+    "description" : "Generated from ForgeSphere mock endpoint definitions.",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable" : [ {
+    "key" : "mockBaseUrl",
+    "value" : "https://forgesphere.probestack.io/mock-api/v1/api/mocks/mock-d7b76cc8"
+  }, {
+    "key" : "userEmail",
+    "value" : ""
+  }, {
+    "key" : "id",
+    "value" : "sample-id"
+  } ],
+  "item" : [ {
+    "name" : "GET /contracts",
+    "request" : {
+      "method" : "GET",
+      "header" : [ {
+        "key" : "Accept",
+        "value" : "application/json"
+      }, {
+        "key" : "x-user-email",
+        "value" : "{{userEmail}}"
+      } ],
+      "url" : {
+        "raw" : "{{mockBaseUrl}}/contracts"
+      }
+    },
+    "response" : [ {
+      "name" : "Mock 200",
+      "code" : 200,
+      "status" : "OK",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\"content\":[{\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"status\":\"ACTIVE\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"pendingBreakingChange\":{\"proposedSchemaVersion\":4,\"proposedAt\":\"2024-01-01T00:00:00Z\",\"breakingChanges\":[\"Removing field 'discount_code'\",\"Changing type of 'amount' from double to float\"],\"approvedBy\":[\"analytics-team\",\"risk-team\"],\"awaitingApproval\":[\"customer-dashboard-team\"]},\"violationStats\":{\"last24h\":47,\"last7d\":312,\"last30d\":1248,\"topViolationType\":\"MISSING_FIELD\",\"topProducerViolating\":\"payment-processor-legacy\"},\"consumerHealth\":[{\"consumerTeam\":\"analytics-team\",\"compatibilityStatus\":\"COMPATIBLE\",\"lastValidatedAt\":\"2024-01-01T00:00:00Z\"}],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"auditReference\":\"audit://data-contract/contract-9c8f1a3b\"}],\"totalElements\":247,\"totalPages\":13,\"page\":0,\"size\":20,\"summary\":{\"totalContracts\":247,\"active\":232,\"pendingConsumerApproval\":3,\"contractsWithViolations24h\":12,\"totalViolations24h\":1543,\"topViolatingContract\":\"payments.transactions.v1\"}}"
+    } ]
+  }, {
+    "name" : "POST /contracts",
+    "request" : {
+      "method" : "POST",
+      "header" : [ {
+        "key" : "Accept",
+        "value" : "application/json"
+      }, {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      }, {
+        "key" : "x-user-email",
+        "value" : "{{userEmail}}"
+      } ],
+      "url" : {
+        "raw" : "{{mockBaseUrl}}/contracts"
+      },
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{\"type\":\"record\",\"name\":\"PaymentTransaction\",\"namespace\":\"com.forgesphere.payments\",\"fields\":[{\"name\":\"transactionId\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"double\"},{\"name\":\"currency\",\"type\":\"string\"},{\"name\":\"customerId\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"}]},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"retentionPolicy\":{\"retentionDays\":365,\"deletionMode\":\"TOMBSTONE\"},\"notifyChannels\":[\"SLACK\"]}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      }
+    },
+    "response" : [ {
+      "name" : "Mock 201",
+      "code" : 201,
+      "status" : "OK",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"status\":\"ACTIVE\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"pendingBreakingChange\":{\"proposedSchemaVersion\":4,\"proposedAt\":\"2024-01-01T00:00:00Z\",\"breakingChanges\":[\"Removing field 'discount_code'\",\"Changing type of 'amount' from double to float\"],\"approvedBy\":[\"analytics-team\",\"risk-team\"],\"awaitingApproval\":[\"customer-dashboard-team\"]},\"violationStats\":{\"last24h\":47,\"last7d\":312,\"last30d\":1248,\"topViolationType\":\"MISSING_FIELD\",\"topProducerViolating\":\"payment-processor-legacy\"},\"consumerHealth\":[{\"consumerTeam\":\"analytics-team\",\"compatibilityStatus\":\"COMPATIBLE\",\"lastValidatedAt\":\"2024-01-01T00:00:00Z\"}],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"auditReference\":\"audit://data-contract/contract-9c8f1a3b\"}"
+    } ]
+  }, {
+    "name" : "GET /contracts/{contractId}",
+    "request" : {
+      "method" : "GET",
+      "header" : [ {
+        "key" : "Accept",
+        "value" : "application/json"
+      }, {
+        "key" : "x-user-email",
+        "value" : "{{userEmail}}"
+      } ],
+      "url" : {
+        "raw" : "{{mockBaseUrl}}/contracts/{contractId}"
+      }
+    },
+    "response" : [ {
+      "name" : "Mock 200",
+      "code" : 200,
+      "status" : "OK",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"status\":\"ACTIVE\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"pendingBreakingChange\":{\"proposedSchemaVersion\":4,\"proposedAt\":\"2024-01-01T00:00:00Z\",\"breakingChanges\":[\"Removing field 'discount_code'\",\"Changing type of 'amount' from double to float\"],\"approvedBy\":[\"analytics-team\",\"risk-team\"],\"awaitingApproval\":[\"customer-dashboard-team\"]},\"violationStats\":{\"last24h\":47,\"last7d\":312,\"last30d\":1248,\"topViolationType\":\"MISSING_FIELD\",\"topProducerViolating\":\"payment-processor-legacy\"},\"consumerHealth\":[{\"consumerTeam\":\"analytics-team\",\"compatibilityStatus\":\"COMPATIBLE\",\"lastValidatedAt\":\"2024-01-01T00:00:00Z\"}],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"auditReference\":\"audit://data-contract/contract-9c8f1a3b\"}"
+    } ]
+  }, {
+    "name" : "POST /contracts/{contractId}/validate",
+    "request" : {
+      "method" : "POST",
+      "header" : [ {
+        "key" : "Accept",
+        "value" : "application/json"
+      }, {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      }, {
+        "key" : "x-user-email",
+        "value" : "{{userEmail}}"
+      } ],
+      "url" : {
+        "raw" : "{{mockBaseUrl}}/contracts/{contractId}/validate"
+      },
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{\"messagePayload\":{\"transactionId\":\"txn-12345\",\"amount\":149.99,\"currency\":\"USD\",\"customerId\":\"cust-789\",\"timestamp\":1730810400000},\"messageKey\":\"cust-789\",\"producerService\":\"payment-processor\",\"producerInstance\":\"payment-processor-pod-7f8b9c\",\"schemaVersionOverride\":2}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      }
+    },
+    "response" : [ {
+      "name" : "Mock 200",
+      "code" : 200,
+      "status" : "OK",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\"validationId\":\"b1a2c3d4-e5f6-7890-1234-567890abcdef\",\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"valid\":false,\"verdict\":\"INVALID\",\"validatedSchemaVersion\":3,\"errors\":[{\"field\":\"customerId\",\"violationType\":\"MISSING_FIELD\",\"message\":\"Required field 'customerId' is missing from payload.\",\"expectedType\":\"string\",\"actualType\":\"string\",\"suggestedFix\":\"Add 'customerId' to the payload before publishing.\"}],\"warnings\":[\"Field 'discount_code' is deprecated and will be removed in v4.\"],\"evaluatedAt\":\"2024-01-01T00:00:00Z\",\"latencyMs\":3,\"auditReference\":\"audit://data-contract/validation-b1a2c3d4\"}"
+    } ]
+  }, {
+    "name" : "GET /violations",
+    "request" : {
+      "method" : "GET",
+      "header" : [ {
+        "key" : "Accept",
+        "value" : "application/json"
+      }, {
+        "key" : "x-user-email",
+        "value" : "{{userEmail}}"
+      } ],
+      "url" : {
+        "raw" : "{{mockBaseUrl}}/violations"
+      }
+    },
+    "response" : [ {
+      "name" : "Mock 200",
+      "code" : 200,
+      "status" : "OK",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json"
+      } ],
+      "body" : "{\"content\":[{\"violationId\":\"c1a2c3d4-e5f6-7890-1234-567890abcdef\",\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"violationType\":\"MISSING_FIELD\",\"severity\":\"CRITICAL\",\"status\":\"OPEN\",\"producerService\":\"payment-processor-legacy\",\"producerInstance\":\"payment-processor-legacy-pod-4d5e6f\",\"producerTeam\":\"payments-team\",\"affectedField\":\"customerId\",\"errorDetail\":\"Required field 'customerId' missing from 847 messages in last hour.\",\"samplePayload\":{\"transactionId\":\"txn-12345\",\"amount\":149.99},\"occurrenceCount\":847,\"firstOccurrenceAt\":\"2024-01-01T00:00:00Z\",\"lastOccurrenceAt\":\"2024-01-01T00:00:00Z\",\"detectedAt\":\"2024-01-01T00:00:00Z\",\"acknowledgedAt\":\"2024-01-01T00:00:00Z\",\"acknowledgedBy\":\"string\",\"resolvedAt\":\"2024-01-01T00:00:00Z\",\"resolvedBy\":\"string\",\"resolutionNotes\":\"string\",\"auditReference\":\"audit://data-contract/violation-c1a2c3d4\"}],\"totalElements\":1543,\"totalPages\":78,\"page\":0,\"size\":20,\"summary\":{\"totalViolations\":1543,\"open\":342,\"acknowledged\":87,\"resolved24h\":156,\"criticalCount\":12,\"errorCount\":342,\"warningCount\":1189,\"topProducers\":[\"payment-processor-legacy\",\"checkout-service-v1\"]}}"
+    } ]
+  } ]
+}
