@@ -1,0 +1,117 @@
+{
+  "artifactId" : "streaming-data-contract-enforcer",
+  "resourceId" : "6aedd5a8980a0362ff6af778",
+  "generatedAt" : "2026-11-06T13:31:02.242820515Z",
+  "mock" : {
+    "id" : "d31cb77c-c6aa-4ba3-bd09-68b5d420d5ef",
+    "microserviceId" : null,
+    "specMetadataId" : "6aedd5d28757d523a28e4934",
+    "apiSpecName" : "Streaming Data Contract Enforcer",
+    "name" : "mock-streaming-data-contract-enforcer",
+    "mockServiceName" : "mock-streaming-data-contract-enforcer",
+    "mockServerUrl" : "https://forgesphere.probestack.io/mock-api/v1/api/mocks/mock-d7b76cc8",
+    "mockUrl" : "mock-d7b76cc8",
+    "isPrivate" : false,
+    "delayMs" : 0,
+    "responseLatencyMs" : 0,
+    "requestCount" : 5,
+    "createdAt" : "2026-11-06T13:28:03.137Z",
+    "updatedAt" : "2026-11-06T13:28:06.159Z"
+  },
+  "endpoints" : [ {
+    "id" : "0815f39c-a440-4b92-81e8-ea70f61737aa",
+    "isActive" : true,
+    "request" : {
+      "method" : "GET",
+      "path" : "/contracts",
+      "bodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"content\":[{\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"status\":\"ACTIVE\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"pendingBreakingChange\":{\"proposedSchemaVersion\":4,\"proposedAt\":\"2024-01-01T00:00:00Z\",\"breakingChanges\":[\"Removing field 'discount_code'\",\"Changing type of 'amount' from double to float\"],\"approvedBy\":[\"analytics-team\",\"risk-team\"],\"awaitingApproval\":[\"customer-dashboard-team\"]},\"violationStats\":{\"last24h\":47,\"last7d\":312,\"last30d\":1248,\"topViolationType\":\"MISSING_FIELD\",\"topProducerViolating\":\"payment-processor-legacy\"},\"consumerHealth\":[{\"consumerTeam\":\"analytics-team\",\"compatibilityStatus\":\"COMPATIBLE\",\"lastValidatedAt\":\"2024-01-01T00:00:00Z\"}],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"auditReference\":\"audit://data-contract/contract-9c8f1a3b\"}],\"totalElements\":247,\"totalPages\":13,\"page\":0,\"size\":20,\"summary\":{\"totalContracts\":247,\"active\":232,\"pendingConsumerApproval\":3,\"contractsWithViolations24h\":12,\"totalViolations24h\":1543,\"topViolatingContract\":\"payments.transactions.v1\"}}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "b4bab5f1-4175-446e-98ee-9226cbf82f66",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/contracts",
+      "bodySample" : "{\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{\"type\":\"record\",\"name\":\"PaymentTransaction\",\"namespace\":\"com.forgesphere.payments\",\"fields\":[{\"name\":\"transactionId\",\"type\":\"string\"},{\"name\":\"amount\",\"type\":\"double\"},{\"name\":\"currency\",\"type\":\"string\"},{\"name\":\"customerId\",\"type\":\"string\"},{\"name\":\"timestamp\",\"type\":\"long\"}]},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"retentionPolicy\":{\"retentionDays\":365,\"deletionMode\":\"TOMBSTONE\"},\"notifyChannels\":[\"SLACK\"]}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 201,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"status\":\"ACTIVE\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"pendingBreakingChange\":{\"proposedSchemaVersion\":4,\"proposedAt\":\"2024-01-01T00:00:00Z\",\"breakingChanges\":[\"Removing field 'discount_code'\",\"Changing type of 'amount' from double to float\"],\"approvedBy\":[\"analytics-team\",\"risk-team\"],\"awaitingApproval\":[\"customer-dashboard-team\"]},\"violationStats\":{\"last24h\":47,\"last7d\":312,\"last30d\":1248,\"topViolationType\":\"MISSING_FIELD\",\"topProducerViolating\":\"payment-processor-legacy\"},\"consumerHealth\":[{\"consumerTeam\":\"analytics-team\",\"compatibilityStatus\":\"COMPATIBLE\",\"lastValidatedAt\":\"2024-01-01T00:00:00Z\"}],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"auditReference\":\"audit://data-contract/contract-9c8f1a3b\"}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "9b9dcfdc-b628-4a6c-b42e-4342c1a139a7",
+    "isActive" : true,
+    "request" : {
+      "method" : "GET",
+      "path" : "/contracts/{contractId}",
+      "bodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"clusterName\":\"prod-kafka-us-east-1\",\"schemaFormat\":\"AVRO\",\"schema\":{},\"schemaVersion\":3,\"compatibilityMode\":\"FULL_TRANSITIVE\",\"enforcementLevel\":\"BLOCK\",\"status\":\"ACTIVE\",\"producerTeam\":\"payments-team\",\"producerService\":\"payment-processor\",\"consumerTeams\":[\"analytics-team\",\"risk-team\",\"customer-dashboard-team\"],\"piiFields\":[\"customerId\"],\"pendingBreakingChange\":{\"proposedSchemaVersion\":4,\"proposedAt\":\"2024-01-01T00:00:00Z\",\"breakingChanges\":[\"Removing field 'discount_code'\",\"Changing type of 'amount' from double to float\"],\"approvedBy\":[\"analytics-team\",\"risk-team\"],\"awaitingApproval\":[\"customer-dashboard-team\"]},\"violationStats\":{\"last24h\":47,\"last7d\":312,\"last30d\":1248,\"topViolationType\":\"MISSING_FIELD\",\"topProducerViolating\":\"payment-processor-legacy\"},\"consumerHealth\":[{\"consumerTeam\":\"analytics-team\",\"compatibilityStatus\":\"COMPATIBLE\",\"lastValidatedAt\":\"2024-01-01T00:00:00Z\"}],\"createdAt\":\"2024-01-01T00:00:00Z\",\"updatedAt\":\"2024-01-01T00:00:00Z\",\"auditReference\":\"audit://data-contract/contract-9c8f1a3b\"}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "57b9ecbd-a252-4c8b-a6a1-869231252858",
+    "isActive" : true,
+    "request" : {
+      "method" : "POST",
+      "path" : "/contracts/{contractId}/validate",
+      "bodySample" : "{\"messagePayload\":{\"transactionId\":\"txn-12345\",\"amount\":149.99,\"currency\":\"USD\",\"customerId\":\"cust-789\",\"timestamp\":1730810400000},\"messageKey\":\"cust-789\",\"producerService\":\"payment-processor\",\"producerInstance\":\"payment-processor-pod-7f8b9c\",\"schemaVersionOverride\":2}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"validationId\":\"b1a2c3d4-e5f6-7890-1234-567890abcdef\",\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"valid\":false,\"verdict\":\"INVALID\",\"validatedSchemaVersion\":3,\"errors\":[{\"field\":\"customerId\",\"violationType\":\"MISSING_FIELD\",\"message\":\"Required field 'customerId' is missing from payload.\",\"expectedType\":\"string\",\"actualType\":\"string\",\"suggestedFix\":\"Add 'customerId' to the payload before publishing.\"}],\"warnings\":[\"Field 'discount_code' is deprecated and will be removed in v4.\"],\"evaluatedAt\":\"2024-01-01T00:00:00Z\",\"latencyMs\":3,\"auditReference\":\"audit://data-contract/validation-b1a2c3d4\"}",
+      "delayMs" : 0
+    }
+  }, {
+    "id" : "f8b91118-ecad-4297-b095-84d69a6c5f90",
+    "isActive" : true,
+    "request" : {
+      "method" : "GET",
+      "path" : "/violations",
+      "bodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true
+    },
+    "response" : {
+      "status" : 200,
+      "headers" : {
+        "Content-Type" : "application/json"
+      },
+      "body" : "{\"content\":[{\"violationId\":\"c1a2c3d4-e5f6-7890-1234-567890abcdef\",\"contractId\":\"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\"topicName\":\"payments.transactions.v1\",\"violationType\":\"MISSING_FIELD\",\"severity\":\"CRITICAL\",\"status\":\"OPEN\",\"producerService\":\"payment-processor-legacy\",\"producerInstance\":\"payment-processor-legacy-pod-4d5e6f\",\"producerTeam\":\"payments-team\",\"affectedField\":\"customerId\",\"errorDetail\":\"Required field 'customerId' missing from 847 messages in last hour.\",\"samplePayload\":{\"transactionId\":\"txn-12345\",\"amount\":149.99},\"occurrenceCount\":847,\"firstOccurrenceAt\":\"2024-01-01T00:00:00Z\",\"lastOccurrenceAt\":\"2024-01-01T00:00:00Z\",\"detectedAt\":\"2024-01-01T00:00:00Z\",\"acknowledgedAt\":\"2024-01-01T00:00:00Z\",\"acknowledgedBy\":\"string\",\"resolvedAt\":\"2024-01-01T00:00:00Z\",\"resolvedBy\":\"string\",\"resolutionNotes\":\"string\",\"auditReference\":\"audit://data-contract/violation-c1a2c3d4\"}],\"totalElements\":1543,\"totalPages\":78,\"page\":0,\"size\":20,\"summary\":{\"totalViolations\":1543,\"open\":342,\"acknowledged\":87,\"resolved24h\":156,\"criticalCount\":12,\"errorCount\":342,\"warningCount\":1189,\"topProducers\":[\"payment-processor-legacy\",\"checkout-service-v1\"]}}",
+      "delayMs" : 0
+    }
+  } ]
+}
