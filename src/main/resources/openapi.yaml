@@ -1,0 +1,1400 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: data-platform@forgesphere.example.com
+    name: ForgeSphere Data Platform
+  description: "Enforces data contracts between Kafka producers and consumers. Prevents\
+    \ \nthe #1 cause of streaming pipeline outages: silent schema changes that \n\
+    break downstream consumers. Every message produced to a topic is validated \n\
+    against a registered contract before being published. Breaking changes \nrequire\
+    \ explicit consumer acknowledgment, ensuring no surprises in \nproduction. Supports\
+    \ Avro, Protobuf, and JSON Schema formats.\n"
+  title: Streaming Data Contract Enforcer
+  version: 1.0.0
+servers:
+- description: Production Server
+  url: https://data-contract.forgesphere.lightning.com/v1
+- description: Local Development Server
+  url: http://localhost:8149/v1
+security:
+- bearerAuth: []
+tags:
+- description: Register and manage producer/consumer data contracts.
+  name: Contracts
+- description: Track and resolve schema violations.
+  name: Violations
+paths:
+  /contracts:
+    get:
+      description: "Returns all data contracts with filters. Used by platform teams\
+        \ to \naudit coverage (\"which topics are still unprotected?\") and by service\
+        \ \nowners to see their contracts.\n"
+      operationId: listContracts
+      parameters:
+      - description: Filter by producer team.
+        example: payments-team
+        explode: true
+        in: query
+        name: producerTeam
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by consumer team.
+        example: analytics-team
+        explode: true
+        in: query
+        name: consumerTeam
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by Kafka cluster.
+        example: prod-kafka-us-east-1
+        explode: true
+        in: query
+        name: clusterName
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by enforcement level.
+        explode: true
+        in: query
+        name: enforcementLevel
+        required: false
+        schema:
+          enum:
+          - BLOCK
+          - WARN
+          - AUDIT_ONLY
+          type: string
+        style: form
+      - description: Filter by schema format.
+        explode: true
+        in: query
+        name: schemaFormat
+        required: false
+        schema:
+          enum:
+          - AVRO
+          - PROTOBUF
+          - JSON_SCHEMA
+          type: string
+        style: form
+      - description: Only include contracts with violations in last 24h.
+        explode: true
+        in: query
+        name: hasRecentViolations
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - description: Page number (zero-based).
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: Number of items per page.
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractList"
+          description: List of contracts retrieved successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request payload or missing required fields.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error.
+      summary: List all registered data contracts
+      tags:
+      - Contracts
+      x-accepts: application/json
+      x-tags:
+      - tag: Contracts
+    post:
+      description: "Registers a data contract — a formal agreement between the producer\
+        \ \nand all consumers of a Kafka topic. The contract specifies the schema,\
+        \ \ncompatibility mode, and enforcement level. Once active, every message\
+        \ \npublished to the topic must conform to the schema. Schema changes \ntrigger\
+        \ validation against the compatibility rules.\n"
+      operationId: registerContract
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/registerContract_request"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+          description: Contract registered and active.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request payload or missing required fields.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: A contract already exists for this topic and cluster.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error.
+      summary: Register a new data contract for a Kafka topic
+      tags:
+      - Contracts
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Contracts
+  /contracts/{contractId}:
+    get:
+      description: "Returns the full contract — schema, version history, producer/consumer\
+        \ \nteams, violation statistics, and compatibility rules. Includes current\
+        \ \nschema drift status and any pending breaking changes awaiting consumer\
+        \ \napproval.\n"
+      operationId: getContract
+      parameters:
+      - description: Unique identifier of the contract.
+        example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        explode: false
+        in: path
+        name: contractId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: Include recent violations in the response.
+        example: true
+        explode: true
+        in: query
+        name: includeViolationHistory
+        required: false
+        schema:
+          default: true
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contract"
+          description: Contract details retrieved successfully.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Contract or violation not found.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error.
+      summary: Get detailed information about a specific contract
+      tags:
+      - Contracts
+      x-accepts: application/json
+      x-tags:
+      - tag: Contracts
+  /contracts/{contractId}/validate:
+    post:
+      description: "Synchronously validates a message payload against the contract\
+        \ schema \nbefore it's published to Kafka. Returns VALID, INVALID, or \nCOMPATIBILITY_VIOLATION\
+        \ with detailed error info. This is the hot-path \nendpoint called by producer\
+        \ SDKs on every message (latency target: \n<5ms via client-side caching).\n"
+      operationId: validateMessage
+      parameters:
+      - description: Unique identifier of the contract.
+        example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        explode: false
+        in: path
+        name: contractId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/validateMessage_request"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResult"
+          description: Validation result.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request payload or missing required fields.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Contract or violation not found.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error.
+      summary: Validate a message against the contract before publishing
+      tags:
+      - Contracts
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Contracts
+  /violations:
+    get:
+      description: "Returns all schema violations detected across all contracts. Used\
+        \ by \nplatform teams to identify rogue producers, spot emerging schema drift,\
+        \ \nand prioritize which contracts need attention. Supports filtering by \n\
+        contract, producer, severity, and time window.\n"
+      operationId: listViolations
+      parameters:
+      - description: Filter by contract.
+        example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        explode: true
+        in: query
+        name: contractId
+        required: false
+        schema:
+          format: uuid
+          type: string
+        style: form
+      - description: Filter by producer service.
+        example: payment-processor
+        explode: true
+        in: query
+        name: producerService
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by severity.
+        example: CRITICAL
+        explode: true
+        in: query
+        name: severity
+        required: false
+        schema:
+          enum:
+          - WARNING
+          - ERROR
+          - CRITICAL
+          type: string
+        style: form
+      - description: Filter by violation type.
+        explode: true
+        in: query
+        name: violationType
+        required: false
+        schema:
+          enum:
+          - SCHEMA_MISMATCH
+          - MISSING_FIELD
+          - EXTRA_FIELD
+          - TYPE_MISMATCH
+          - NULL_VIOLATION
+          - COMPATIBILITY_BREAK
+          - ENUM_VIOLATION
+          type: string
+        style: form
+      - description: Filter by violation status.
+        explode: true
+        in: query
+        name: status
+        required: false
+        schema:
+          enum:
+          - OPEN
+          - ACKNOWLEDGED
+          - RESOLVED
+          - IGNORED
+          type: string
+        style: form
+      - description: Only include violations after this time.
+        explode: true
+        in: query
+        name: fromDate
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Only include violations before this time.
+        explode: true
+        in: query
+        name: toDate
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Page number (zero-based).
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - description: Number of items per page.
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViolationList"
+          description: List of violations retrieved successfully.
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request payload or missing required fields.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error.
+      summary: List contract violations across all topics
+      tags:
+      - Violations
+      x-accepts: application/json
+      x-tags:
+      - tag: Violations
+components:
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Invalid request payload or missing required fields.
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Contract or violation not found.
+    InternalError:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Internal server error.
+  schemas:
+    Contract:
+      example:
+        schema:
+          key: ""
+        compatibilityMode: FULL_TRANSITIVE
+        auditReference: audit://data-contract/contract-9c8f1a3b
+        schemaVersion: 3
+        consumerHealth:
+        - compatibilityStatus: COMPATIBLE
+          consumerTeam: analytics-team
+          lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+        - compatibilityStatus: COMPATIBLE
+          consumerTeam: analytics-team
+          lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+        enforcementLevel: BLOCK
+        producerService: payment-processor
+        violationStats:
+          last30d: 1248
+          last24h: 47
+          topViolationType: MISSING_FIELD
+          topProducerViolating: payment-processor-legacy
+          last7d: 312
+        consumerTeams:
+        - analytics-team
+        - risk-team
+        - customer-dashboard-team
+        pendingBreakingChange:
+          awaitingApproval:
+          - customer-dashboard-team
+          proposedSchemaVersion: 4
+          approvedBy:
+          - analytics-team
+          - risk-team
+          proposedAt: 2000-01-23T04:56:07.000+00:00
+          breakingChanges:
+          - Removing field 'discount_code'
+          - Changing type of 'amount' from double to float
+        schemaFormat: AVRO
+        piiFields:
+        - customerId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        producerTeam: payments-team
+        clusterName: prod-kafka-us-east-1
+        contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        topicName: payments.transactions.v1
+        status: ACTIVE
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        contractId:
+          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          format: uuid
+          type: string
+        topicName:
+          example: payments.transactions.v1
+          type: string
+        clusterName:
+          example: prod-kafka-us-east-1
+          type: string
+        schemaFormat:
+          enum:
+          - AVRO
+          - PROTOBUF
+          - JSON_SCHEMA
+          example: AVRO
+          type: string
+        schema:
+          additionalProperties: true
+          description: Current schema definition.
+          type: object
+        schemaVersion:
+          example: 3
+          type: integer
+        compatibilityMode:
+          enum:
+          - BACKWARD
+          - FORWARD
+          - FULL
+          - NONE
+          - BACKWARD_TRANSITIVE
+          - FORWARD_TRANSITIVE
+          - FULL_TRANSITIVE
+          example: FULL_TRANSITIVE
+          type: string
+        enforcementLevel:
+          enum:
+          - BLOCK
+          - WARN
+          - AUDIT_ONLY
+          example: BLOCK
+          type: string
+        status:
+          enum:
+          - ACTIVE
+          - PENDING_CONSUMER_APPROVAL
+          - DEPRECATED
+          - SUSPENDED
+          example: ACTIVE
+          type: string
+        producerTeam:
+          example: payments-team
+          type: string
+        producerService:
+          example: payment-processor
+          type: string
+        consumerTeams:
+          example:
+          - analytics-team
+          - risk-team
+          - customer-dashboard-team
+          items:
+            type: string
+          type: array
+        piiFields:
+          example:
+          - customerId
+          items:
+            type: string
+          type: array
+        pendingBreakingChange:
+          $ref: "#/components/schemas/Contract_pendingBreakingChange"
+        violationStats:
+          $ref: "#/components/schemas/Contract_violationStats"
+        consumerHealth:
+          description: Per-consumer compatibility status.
+          items:
+            $ref: "#/components/schemas/Contract_consumerHealth_inner"
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        auditReference:
+          example: audit://data-contract/contract-9c8f1a3b
+          type: string
+      required:
+      - clusterName
+      - compatibilityMode
+      - contractId
+      - createdAt
+      - enforcementLevel
+      - producerTeam
+      - schemaFormat
+      - schemaVersion
+      - status
+      - topicName
+      type: object
+    ContractList:
+      example:
+        summary:
+          totalViolations24h: 1543
+          contractsWithViolations24h: 12
+          topViolatingContract: payments.transactions.v1
+          active: 232
+          pendingConsumerApproval: 3
+          totalContracts: 247
+        size: 20
+        totalPages: 13
+        page: 0
+        content:
+        - schema:
+            key: ""
+          compatibilityMode: FULL_TRANSITIVE
+          auditReference: audit://data-contract/contract-9c8f1a3b
+          schemaVersion: 3
+          consumerHealth:
+          - compatibilityStatus: COMPATIBLE
+            consumerTeam: analytics-team
+            lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+          - compatibilityStatus: COMPATIBLE
+            consumerTeam: analytics-team
+            lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+          enforcementLevel: BLOCK
+          producerService: payment-processor
+          violationStats:
+            last30d: 1248
+            last24h: 47
+            topViolationType: MISSING_FIELD
+            topProducerViolating: payment-processor-legacy
+            last7d: 312
+          consumerTeams:
+          - analytics-team
+          - risk-team
+          - customer-dashboard-team
+          pendingBreakingChange:
+            awaitingApproval:
+            - customer-dashboard-team
+            proposedSchemaVersion: 4
+            approvedBy:
+            - analytics-team
+            - risk-team
+            proposedAt: 2000-01-23T04:56:07.000+00:00
+            breakingChanges:
+            - Removing field 'discount_code'
+            - Changing type of 'amount' from double to float
+          schemaFormat: AVRO
+          piiFields:
+          - customerId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          producerTeam: payments-team
+          clusterName: prod-kafka-us-east-1
+          contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          topicName: payments.transactions.v1
+          status: ACTIVE
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - schema:
+            key: ""
+          compatibilityMode: FULL_TRANSITIVE
+          auditReference: audit://data-contract/contract-9c8f1a3b
+          schemaVersion: 3
+          consumerHealth:
+          - compatibilityStatus: COMPATIBLE
+            consumerTeam: analytics-team
+            lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+          - compatibilityStatus: COMPATIBLE
+            consumerTeam: analytics-team
+            lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+          enforcementLevel: BLOCK
+          producerService: payment-processor
+          violationStats:
+            last30d: 1248
+            last24h: 47
+            topViolationType: MISSING_FIELD
+            topProducerViolating: payment-processor-legacy
+            last7d: 312
+          consumerTeams:
+          - analytics-team
+          - risk-team
+          - customer-dashboard-team
+          pendingBreakingChange:
+            awaitingApproval:
+            - customer-dashboard-team
+            proposedSchemaVersion: 4
+            approvedBy:
+            - analytics-team
+            - risk-team
+            proposedAt: 2000-01-23T04:56:07.000+00:00
+            breakingChanges:
+            - Removing field 'discount_code'
+            - Changing type of 'amount' from double to float
+          schemaFormat: AVRO
+          piiFields:
+          - customerId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          producerTeam: payments-team
+          clusterName: prod-kafka-us-east-1
+          contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          topicName: payments.transactions.v1
+          status: ACTIVE
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        totalElements: 247
+      properties:
+        content:
+          items:
+            $ref: "#/components/schemas/Contract"
+          type: array
+        totalElements:
+          example: 247
+          type: integer
+        totalPages:
+          example: 13
+          type: integer
+        page:
+          example: 0
+          type: integer
+        size:
+          example: 20
+          type: integer
+        summary:
+          $ref: "#/components/schemas/ContractList_summary"
+      required:
+      - content
+      - totalElements
+      - totalPages
+      type: object
+    ValidationResult:
+      example:
+        valid: false
+        auditReference: audit://data-contract/validation-b1a2c3d4
+        validationId: b1a2c3d4-e5f6-7890-1234-567890abcdef
+        validatedSchemaVersion: 3
+        verdict: INVALID
+        warnings:
+        - Field 'discount_code' is deprecated and will be removed in v4.
+        contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        evaluatedAt: 2000-01-23T04:56:07.000+00:00
+        errors:
+        - field: customerId
+          violationType: MISSING_FIELD
+          actualType: actualType
+          expectedType: string
+          suggestedFix: Add 'customerId' to the payload before publishing.
+          message: Required field 'customerId' is missing from payload.
+        - field: customerId
+          violationType: MISSING_FIELD
+          actualType: actualType
+          expectedType: string
+          suggestedFix: Add 'customerId' to the payload before publishing.
+          message: Required field 'customerId' is missing from payload.
+        latencyMs: 3
+      properties:
+        validationId:
+          example: b1a2c3d4-e5f6-7890-1234-567890abcdef
+          format: uuid
+          type: string
+        contractId:
+          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          format: uuid
+          type: string
+        valid:
+          example: false
+          type: boolean
+        verdict:
+          enum:
+          - VALID
+          - INVALID
+          - COMPATIBILITY_VIOLATION
+          - WARNING
+          example: INVALID
+          type: string
+        validatedSchemaVersion:
+          example: 3
+          type: integer
+        errors:
+          description: Specific validation errors (empty if valid).
+          items:
+            $ref: "#/components/schemas/ValidationResult_errors_inner"
+          type: array
+        warnings:
+          description: "Non-blocking warnings (schema drift, deprecated fields)."
+          example:
+          - Field 'discount_code' is deprecated and will be removed in v4.
+          items:
+            type: string
+          type: array
+        evaluatedAt:
+          format: date-time
+          type: string
+        latencyMs:
+          description: Server-side evaluation time (excludes network).
+          example: 3
+          type: integer
+        auditReference:
+          example: audit://data-contract/validation-b1a2c3d4
+          type: string
+      required:
+      - contractId
+      - evaluatedAt
+      - latencyMs
+      - valid
+      - validationId
+      type: object
+    Violation:
+      example:
+        severity: CRITICAL
+        auditReference: audit://data-contract/violation-c1a2c3d4
+        producerInstance: payment-processor-legacy-pod-4d5e6f
+        resolvedAt: 2000-01-23T04:56:07.000+00:00
+        producerService: payment-processor-legacy
+        resolvedBy: resolvedBy
+        occurrenceCount: 847
+        acknowledgedBy: acknowledgedBy
+        affectedField: customerId
+        acknowledgedAt: 2000-01-23T04:56:07.000+00:00
+        producerTeam: payments-team
+        samplePayload:
+          transactionId: txn-12345
+          amount: 149.99
+        violationType: MISSING_FIELD
+        contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+        topicName: payments.transactions.v1
+        errorDetail: Required field 'customerId' missing from 847 messages in last
+          hour.
+        lastOccurrenceAt: 2000-01-23T04:56:07.000+00:00
+        detectedAt: 2000-01-23T04:56:07.000+00:00
+        violationId: c1a2c3d4-e5f6-7890-1234-567890abcdef
+        status: OPEN
+        firstOccurrenceAt: 2000-01-23T04:56:07.000+00:00
+        resolutionNotes: resolutionNotes
+      properties:
+        violationId:
+          example: c1a2c3d4-e5f6-7890-1234-567890abcdef
+          format: uuid
+          type: string
+        contractId:
+          example: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          format: uuid
+          type: string
+        topicName:
+          example: payments.transactions.v1
+          type: string
+        violationType:
+          enum:
+          - SCHEMA_MISMATCH
+          - MISSING_FIELD
+          - EXTRA_FIELD
+          - TYPE_MISMATCH
+          - NULL_VIOLATION
+          - COMPATIBILITY_BREAK
+          - ENUM_VIOLATION
+          example: MISSING_FIELD
+          type: string
+        severity:
+          enum:
+          - WARNING
+          - ERROR
+          - CRITICAL
+          example: CRITICAL
+          type: string
+        status:
+          enum:
+          - OPEN
+          - ACKNOWLEDGED
+          - RESOLVED
+          - IGNORED
+          example: OPEN
+          type: string
+        producerService:
+          example: payment-processor-legacy
+          type: string
+        producerInstance:
+          example: payment-processor-legacy-pod-4d5e6f
+          type: string
+        producerTeam:
+          example: payments-team
+          type: string
+        affectedField:
+          example: customerId
+          type: string
+        errorDetail:
+          example: Required field 'customerId' missing from 847 messages in last hour.
+          type: string
+        samplePayload:
+          additionalProperties: true
+          description: Redacted sample of the violating message.
+          example:
+            transactionId: txn-12345
+            amount: 149.99
+          type: object
+        occurrenceCount:
+          description: How many times this violation was observed.
+          example: 847
+          type: integer
+        firstOccurrenceAt:
+          format: date-time
+          type: string
+        lastOccurrenceAt:
+          format: date-time
+          type: string
+        detectedAt:
+          format: date-time
+          type: string
+        acknowledgedAt:
+          format: date-time
+          type: string
+        acknowledgedBy:
+          type: string
+        resolvedAt:
+          format: date-time
+          type: string
+        resolvedBy:
+          type: string
+        resolutionNotes:
+          type: string
+        auditReference:
+          example: audit://data-contract/violation-c1a2c3d4
+          type: string
+      required:
+      - contractId
+      - detectedAt
+      - producerService
+      - severity
+      - status
+      - topicName
+      - violationId
+      - violationType
+      type: object
+    ViolationList:
+      example:
+        summary:
+          acknowledged: 87
+          resolved24h: 156
+          topProducers:
+          - payment-processor-legacy
+          - checkout-service-v1
+          totalViolations: 1543
+          warningCount: 1189
+          criticalCount: 12
+          open: 342
+          errorCount: 342
+        size: 20
+        totalPages: 78
+        page: 0
+        content:
+        - severity: CRITICAL
+          auditReference: audit://data-contract/violation-c1a2c3d4
+          producerInstance: payment-processor-legacy-pod-4d5e6f
+          resolvedAt: 2000-01-23T04:56:07.000+00:00
+          producerService: payment-processor-legacy
+          resolvedBy: resolvedBy
+          occurrenceCount: 847
+          acknowledgedBy: acknowledgedBy
+          affectedField: customerId
+          acknowledgedAt: 2000-01-23T04:56:07.000+00:00
+          producerTeam: payments-team
+          samplePayload:
+            transactionId: txn-12345
+            amount: 149.99
+          violationType: MISSING_FIELD
+          contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          topicName: payments.transactions.v1
+          errorDetail: Required field 'customerId' missing from 847 messages in last
+            hour.
+          lastOccurrenceAt: 2000-01-23T04:56:07.000+00:00
+          detectedAt: 2000-01-23T04:56:07.000+00:00
+          violationId: c1a2c3d4-e5f6-7890-1234-567890abcdef
+          status: OPEN
+          firstOccurrenceAt: 2000-01-23T04:56:07.000+00:00
+          resolutionNotes: resolutionNotes
+        - severity: CRITICAL
+          auditReference: audit://data-contract/violation-c1a2c3d4
+          producerInstance: payment-processor-legacy-pod-4d5e6f
+          resolvedAt: 2000-01-23T04:56:07.000+00:00
+          producerService: payment-processor-legacy
+          resolvedBy: resolvedBy
+          occurrenceCount: 847
+          acknowledgedBy: acknowledgedBy
+          affectedField: customerId
+          acknowledgedAt: 2000-01-23T04:56:07.000+00:00
+          producerTeam: payments-team
+          samplePayload:
+            transactionId: txn-12345
+            amount: 149.99
+          violationType: MISSING_FIELD
+          contractId: 9c8f1a3b-6d7e-4a12-8f5e-123456789abc
+          topicName: payments.transactions.v1
+          errorDetail: Required field 'customerId' missing from 847 messages in last
+            hour.
+          lastOccurrenceAt: 2000-01-23T04:56:07.000+00:00
+          detectedAt: 2000-01-23T04:56:07.000+00:00
+          violationId: c1a2c3d4-e5f6-7890-1234-567890abcdef
+          status: OPEN
+          firstOccurrenceAt: 2000-01-23T04:56:07.000+00:00
+          resolutionNotes: resolutionNotes
+        totalElements: 1543
+      properties:
+        content:
+          items:
+            $ref: "#/components/schemas/Violation"
+          type: array
+        totalElements:
+          example: 1543
+          type: integer
+        totalPages:
+          example: 78
+          type: integer
+        page:
+          example: 0
+          type: integer
+        size:
+          example: 20
+          type: integer
+        summary:
+          $ref: "#/components/schemas/ViolationList_summary"
+      required:
+      - content
+      - totalElements
+      - totalPages
+      type: object
+    ErrorResponse:
+      properties:
+        status:
+          example: 409
+          type: integer
+        errorCode:
+          example: SCHEMA_COMPATIBILITY_BREAK
+          type: string
+        message:
+          example: "New schema version breaks FULL_TRANSITIVE compatibility: removing\
+            \ required field 'customerId' not allowed."
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        path:
+          example: /v1/contracts
+          type: string
+        serviceTransactionId:
+          example: 523f52b2-64a5-465e-b245-3efbe78f70ae
+          type: string
+      required:
+      - message
+      - path
+      - status
+      - timestamp
+      type: object
+    registerContract_request_retentionPolicy:
+      description: Optional. Retention contract for the topic.
+      properties:
+        retentionDays:
+          example: 365
+          type: integer
+        deletionMode:
+          enum:
+          - HARD_DELETE
+          - TOMBSTONE
+          example: TOMBSTONE
+          type: string
+      type: object
+    registerContract_request:
+      properties:
+        topicName:
+          description: Kafka topic this contract applies to.
+          example: payments.transactions.v1
+          type: string
+        clusterName:
+          description: Kafka cluster hosting the topic.
+          example: prod-kafka-us-east-1
+          type: string
+        schemaFormat:
+          description: Schema serialization format.
+          enum:
+          - AVRO
+          - PROTOBUF
+          - JSON_SCHEMA
+          example: AVRO
+          type: string
+        schema:
+          additionalProperties: true
+          description: The schema definition (format-specific).
+          example:
+            type: record
+            name: PaymentTransaction
+            namespace: com.forgesphere.payments
+            fields:
+            - name: transactionId
+              type: string
+            - name: amount
+              type: double
+            - name: currency
+              type: string
+            - name: customerId
+              type: string
+            - name: timestamp
+              type: long
+          type: object
+        schemaVersion:
+          description: Version number for this schema.
+          example: 3
+          type: integer
+        compatibilityMode:
+          description: Schema evolution compatibility rules.
+          enum:
+          - BACKWARD
+          - FORWARD
+          - FULL
+          - NONE
+          - BACKWARD_TRANSITIVE
+          - FORWARD_TRANSITIVE
+          - FULL_TRANSITIVE
+          example: FULL_TRANSITIVE
+          type: string
+        enforcementLevel:
+          description: How strictly to enforce at publish time.
+          enum:
+          - BLOCK
+          - WARN
+          - AUDIT_ONLY
+          example: BLOCK
+          type: string
+        producerTeam:
+          description: Team owning the producer.
+          example: payments-team
+          type: string
+        producerService:
+          description: Specific producer service name.
+          example: payment-processor
+          type: string
+        consumerTeams:
+          description: All teams consuming this topic.
+          example:
+          - analytics-team
+          - risk-team
+          - customer-dashboard-team
+          items:
+            type: string
+          type: array
+        piiFields:
+          description: Fields containing PII (for compliance tracking).
+          example:
+          - customerId
+          items:
+            type: string
+          type: array
+        retentionPolicy:
+          $ref: "#/components/schemas/registerContract_request_retentionPolicy"
+        notifyChannels:
+          description: Where to send violation alerts.
+          example:
+          - SLACK
+          items:
+            enum:
+            - EMAIL
+            - SLACK
+            - PAGERDUTY
+            - WEBHOOK
+            type: string
+          type: array
+      required:
+      - compatibilityMode
+      - producerTeam
+      - schema
+      - schemaFormat
+      - topicName
+      type: object
+    validateMessage_request:
+      properties:
+        messagePayload:
+          additionalProperties: true
+          description: The message to validate.
+          example:
+            transactionId: txn-12345
+            amount: 149.99
+            currency: USD
+            customerId: cust-789
+            timestamp: 1730810400000
+          type: object
+        messageKey:
+          description: Kafka message key (for partition-aware validation).
+          example: cust-789
+          type: string
+        producerService:
+          description: Which service is publishing.
+          example: payment-processor
+          type: string
+        producerInstance:
+          description: Specific pod/instance for debugging.
+          example: payment-processor-pod-7f8b9c
+          type: string
+        schemaVersionOverride:
+          description: Optional. Validate against a specific schema version.
+          example: 2
+          type: integer
+      required:
+      - messagePayload
+      type: object
+    Contract_pendingBreakingChange:
+      description: Present if status = PENDING_CONSUMER_APPROVAL.
+      example:
+        awaitingApproval:
+        - customer-dashboard-team
+        proposedSchemaVersion: 4
+        approvedBy:
+        - analytics-team
+        - risk-team
+        proposedAt: 2000-01-23T04:56:07.000+00:00
+        breakingChanges:
+        - Removing field 'discount_code'
+        - Changing type of 'amount' from double to float
+      properties:
+        proposedSchemaVersion:
+          example: 4
+          type: integer
+        proposedAt:
+          format: date-time
+          type: string
+        breakingChanges:
+          example:
+          - Removing field 'discount_code'
+          - Changing type of 'amount' from double to float
+          items:
+            type: string
+          type: array
+        approvedBy:
+          example:
+          - analytics-team
+          - risk-team
+          items:
+            type: string
+          type: array
+        awaitingApproval:
+          example:
+          - customer-dashboard-team
+          items:
+            type: string
+          type: array
+      type: object
+    Contract_violationStats:
+      example:
+        last30d: 1248
+        last24h: 47
+        topViolationType: MISSING_FIELD
+        topProducerViolating: payment-processor-legacy
+        last7d: 312
+      properties:
+        last24h:
+          example: 47
+          type: integer
+        last7d:
+          example: 312
+          type: integer
+        last30d:
+          example: 1248
+          type: integer
+        topViolationType:
+          enum:
+          - SCHEMA_MISMATCH
+          - MISSING_FIELD
+          - EXTRA_FIELD
+          - TYPE_MISMATCH
+          - NULL_VIOLATION
+          - COMPATIBILITY_BREAK
+          - ENUM_VIOLATION
+          example: MISSING_FIELD
+          type: string
+        topProducerViolating:
+          example: payment-processor-legacy
+          type: string
+      type: object
+    Contract_consumerHealth_inner:
+      example:
+        compatibilityStatus: COMPATIBLE
+        consumerTeam: analytics-team
+        lastValidatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        consumerTeam:
+          example: analytics-team
+          type: string
+        compatibilityStatus:
+          enum:
+          - COMPATIBLE
+          - WARNING
+          - INCOMPATIBLE
+          example: COMPATIBLE
+          type: string
+        lastValidatedAt:
+          format: date-time
+          type: string
+      required:
+      - compatibilityStatus
+      - consumerTeam
+      type: object
+    ContractList_summary:
+      example:
+        totalViolations24h: 1543
+        contractsWithViolations24h: 12
+        topViolatingContract: payments.transactions.v1
+        active: 232
+        pendingConsumerApproval: 3
+        totalContracts: 247
+      properties:
+        totalContracts:
+          example: 247
+          type: integer
+        active:
+          example: 232
+          type: integer
+        pendingConsumerApproval:
+          example: 3
+          type: integer
+        contractsWithViolations24h:
+          example: 12
+          type: integer
+        totalViolations24h:
+          example: 1543
+          type: integer
+        topViolatingContract:
+          example: payments.transactions.v1
+          type: string
+      type: object
+    ValidationResult_errors_inner:
+      example:
+        field: customerId
+        violationType: MISSING_FIELD
+        actualType: actualType
+        expectedType: string
+        suggestedFix: Add 'customerId' to the payload before publishing.
+        message: Required field 'customerId' is missing from payload.
+      properties:
+        field:
+          example: customerId
+          type: string
+        violationType:
+          enum:
+          - SCHEMA_MISMATCH
+          - MISSING_FIELD
+          - EXTRA_FIELD
+          - TYPE_MISMATCH
+          - NULL_VIOLATION
+          - COMPATIBILITY_BREAK
+          - ENUM_VIOLATION
+          example: MISSING_FIELD
+          type: string
+        message:
+          example: Required field 'customerId' is missing from payload.
+          type: string
+        expectedType:
+          example: string
+          type: string
+        actualType:
+          type: string
+        suggestedFix:
+          example: Add 'customerId' to the payload before publishing.
+          type: string
+      required:
+      - field
+      - message
+      - violationType
+      type: object
+    ViolationList_summary:
+      example:
+        acknowledged: 87
+        resolved24h: 156
+        topProducers:
+        - payment-processor-legacy
+        - checkout-service-v1
+        totalViolations: 1543
+        warningCount: 1189
+        criticalCount: 12
+        open: 342
+        errorCount: 342
+      properties:
+        totalViolations:
+          example: 1543
+          type: integer
+        open:
+          example: 342
+          type: integer
+        acknowledged:
+          example: 87
+          type: integer
+        resolved24h:
+          example: 156
+          type: integer
+        criticalCount:
+          example: 12
+          type: integer
+        errorCount:
+          example: 342
+          type: integer
+        warningCount:
+          example: 1189
+          type: integer
+        topProducers:
+          example:
+          - payment-processor-legacy
+          - checkout-service-v1
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: "JWT token issued to producers, consumers, or platform teams."
+      scheme: bearer
+      type: http

@@ -1,0 +1,76 @@
+name: Deploy Microservice
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature-gke'
+      - 'release'
+  workflow_dispatch:
+    inputs:
+      deploy_strategy:
+        description: "Override deploy strategy"
+        required: false
+        default: ""
+        type: choice
+        options: ["", helm, kustomize]
+
+      version:
+        description: "Override image version (blank = derive from release.properties)"
+        required: false
+        default: ""
+        type: string
+
+      k8s_namespace:
+        description: "Override target namespace"
+        required: false
+        default: ""
+        type: string
+
+      k8s_cluster:
+        description: "Override target GKE cluster"
+        required: false
+        default: ""
+        type: string
+
+jobs:
+  deploy:
+    uses: ForgeCrux/pipeline-template/.github/workflows/microservices-v1.yaml@main
+
+    permissions:
+      contents: write
+      id-token: write
+
+    secrets:
+      PROB_SERVICE_TOKEN_URL:           ${{ secrets.PROB_SERVICE_TOKEN_URL }}
+      PROB_SERVICE_TOKEN_CLIENT_ID:     ${{ secrets.PROB_SERVICE_TOKEN_CLIENT_ID }}
+      PROB_SERVICE_TOKEN_CLIENT_SECRET: ${{ secrets.PROB_SERVICE_TOKEN_CLIENT_SECRET }}
+      PROB_SERVICE_TOKEN_TENANT_ID:     ${{ secrets.PROB_SERVICE_TOKEN_TENANT_ID }}
+      cicd_profile_id:                  ${{ secrets.CICD_PROFILE_ID }}
+      GH_TOKEN:                         ${{ secrets.GH_TOKEN }}
+      APP_ID:                           ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY:                  ${{ secrets.APP_PRIVATE_KEY }}
+      ARGOCD_USERNAME:                  ${{ secrets.ARGOCD_USERNAME }}
+      ARGOCD_PASSWORD:                  ${{ secrets.ARGOCD_PASSWORD }}
+      FLOW_CHANGE_ID:                   ${{ secrets.FLOW_CHANGE_ID }}
+      RESOURCE_ID:                      ${{ secrets.RESOURCE_ID }}
+      FLOW_TYPE:                        ${{ secrets.FLOW_TYPE }}
+
+    with:
+      service_name:    streaming-data-contract-enforcer
+
+      # Fall back to the generated defaults when the caller didn't set an override.
+      # The `||` expression only works because GitHub evaluates it at workflow
+      # parse time — inputs.k8s_namespace is `""` for push triggers.
+      k8s_namespace:   ${{ inputs.k8s_namespace != '' && inputs.k8s_namespace || 'streaming-data-contract-enforcer-dev' }}
+      k8s_cluster:     ${{ inputs.k8s_cluster   != '' && inputs.k8s_cluster   || 'probestack-zonal-cluster' }}
+      deploy_strategy: ${{ inputs.deploy_strategy != '' && inputs.deploy_strategy || 'helm' }}
+
+      dockerfile_path:      './Dockerfile'
+      helm_chart_path:      './charts'
+      replica_count:        '2'
+      health_check_path:    '/actuator/health'
+      health_check_timeout: '120'
+
+      version:     ${{ inputs.version }}
+      branch_name: ${{ github.ref_name }}

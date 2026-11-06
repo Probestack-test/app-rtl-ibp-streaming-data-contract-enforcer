@@ -1,0 +1,907 @@
+{
+  "info" : {
+    "_postman_id" : "2b4ca8d2-39dd-4f34-816c-4769c45a2692",
+    "name" : "Streaming Data Contract Enforcer",
+    "description" : "Generated Postman collection for streaming-data-contract-enforcer",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable" : [ {
+    "key" : "baseUrl",
+    "value" : "http://localhost:8080",
+    "type" : "string"
+  }, {
+    "key" : "bearerToken",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "resourceId",
+    "value" : "sample-id",
+    "type" : "string"
+  }, {
+    "key" : "clientId",
+    "value" : "generated-service-client",
+    "type" : "string"
+  }, {
+    "key" : "clientSecret",
+    "value" : "change-me",
+    "type" : "string"
+  }, {
+    "key" : "scope",
+    "value" : "api.read api.write",
+    "type" : "string"
+  } ],
+  "item" : [ {
+    "name" : "Health",
+    "item" : [ {
+      "name" : "Health",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Liveness",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health/liveness",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health", "liveness" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health/liveness",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health", "liveness" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Readiness",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/health/readiness",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "health", "readiness" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/health/readiness",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "health", "readiness" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Metrics",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/metrics",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "metrics" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/metrics",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "metrics" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    }, {
+      "name" : "Prometheus",
+      "request" : {
+        "auth" : {
+          "type" : "noauth"
+        },
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/actuator/prometheus",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "actuator", "prometheus" ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "auth" : {
+            "type" : "noauth"
+          },
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/actuator/prometheus",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "actuator", "prometheus" ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"status\" : \"UP\"\n}"
+      } ]
+    } ]
+  }, {
+    "name" : "Security",
+    "item" : [ {
+      "name" : "Get OAuth2 Token",
+      "request" : {
+        "auth" : {
+          "type" : "basic",
+          "basic" : [ {
+            "key" : "username",
+            "value" : "{{clientId}}",
+            "type" : "string"
+          }, {
+            "key" : "password",
+            "value" : "{{clientSecret}}",
+            "type" : "string"
+          } ]
+        },
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/x-www-form-urlencoded"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "body" : {
+          "mode" : "urlencoded",
+          "urlencoded" : [ {
+            "key" : "grant_type",
+            "value" : "client_credentials",
+            "type" : "text"
+          }, {
+            "key" : "scope",
+            "value" : "{{scope}}",
+            "type" : "text"
+          } ]
+        },
+        "url" : {
+          "raw" : "{{baseUrl}}/oauth2/token",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "oauth2", "token" ]
+        }
+      },
+      "event" : [ {
+        "listen" : "test",
+        "script" : {
+          "type" : "text/javascript",
+          "exec" : [ "const json = pm.response.json();", "if (json.access_token) {", "  pm.collectionVariables.set(\"bearerToken\", json.access_token);", "}" ]
+        }
+      } ]
+    } ]
+  }, {
+    "name" : "Contracts",
+    "item" : [ {
+      "name" : "List all registered data contracts",
+      "request" : {
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/contracts?producerTeam=payments-team&consumerTeam=analytics-team&clusterName=prod-kafka-us-east-1&enforcementLevel=BLOCK&schemaFormat=AVRO&hasRecentViolations=true&page=1&size=1",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "contracts" ],
+          "query" : [ {
+            "key" : "producerTeam",
+            "value" : "payments-team"
+          }, {
+            "key" : "consumerTeam",
+            "value" : "analytics-team"
+          }, {
+            "key" : "clusterName",
+            "value" : "prod-kafka-us-east-1"
+          }, {
+            "key" : "enforcementLevel",
+            "value" : "BLOCK"
+          }, {
+            "key" : "schemaFormat",
+            "value" : "AVRO"
+          }, {
+            "key" : "hasRecentViolations",
+            "value" : true
+          }, {
+            "key" : "page",
+            "value" : 1
+          }, {
+            "key" : "size",
+            "value" : 1
+          } ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts?producerTeam=payments-team&consumerTeam=analytics-team&clusterName=prod-kafka-us-east-1&enforcementLevel=BLOCK&schemaFormat=AVRO&hasRecentViolations=true&page=1&size=1",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts" ],
+            "query" : [ {
+              "key" : "producerTeam",
+              "value" : "payments-team"
+            }, {
+              "key" : "consumerTeam",
+              "value" : "analytics-team"
+            }, {
+              "key" : "clusterName",
+              "value" : "prod-kafka-us-east-1"
+            }, {
+              "key" : "enforcementLevel",
+              "value" : "BLOCK"
+            }, {
+              "key" : "schemaFormat",
+              "value" : "AVRO"
+            }, {
+              "key" : "hasRecentViolations",
+              "value" : true
+            }, {
+              "key" : "page",
+              "value" : 1
+            }, {
+              "key" : "size",
+              "value" : 1
+            } ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"content\" : [ {\n    \"schema\" : {\n      \"key\" : \"\"\n    },\n    \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n    \"auditReference\" : \"audit://data-contract/contract-9c8f1a3b\",\n    \"schemaVersion\" : 3,\n    \"consumerHealth\" : [ {\n      \"compatibilityStatus\" : \"COMPATIBLE\",\n      \"consumerTeam\" : \"analytics-team\",\n      \"lastValidatedAt\" : 948603367000\n    }, {\n      \"compatibilityStatus\" : \"COMPATIBLE\",\n      \"consumerTeam\" : \"analytics-team\",\n      \"lastValidatedAt\" : 948603367000\n    } ],\n    \"enforcementLevel\" : \"BLOCK\",\n    \"producerService\" : \"payment-processor\",\n    \"violationStats\" : {\n      \"last30d\" : 1248,\n      \"last24h\" : 47,\n      \"topViolationType\" : \"MISSING_FIELD\",\n      \"topProducerViolating\" : \"payment-processor-legacy\",\n      \"last7d\" : 312\n    },\n    \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n    \"pendingBreakingChange\" : {\n      \"awaitingApproval\" : [ \"customer-dashboard-team\" ],\n      \"proposedSchemaVersion\" : 4,\n      \"approvedBy\" : [ \"analytics-team\", \"risk-team\" ],\n      \"proposedAt\" : 948603367000,\n      \"breakingChanges\" : [ \"Removing field 'discount_code'\", \"Changing type of 'amount' from double to float\" ]\n    },\n    \"schemaFormat\" : \"AVRO\",\n    \"piiFields\" : [ \"customerId\" ],\n    \"createdAt\" : 948603367000,\n    \"producerTeam\" : \"payments-team\",\n    \"clusterName\" : \"prod-kafka-us-east-1\",\n    \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n    \"topicName\" : \"payments.transactions.v1\",\n    \"status\" : \"ACTIVE\",\n    \"updatedAt\" : 948603367000\n  }, {\n    \"schema\" : {\n      \"key\" : \"\"\n    },\n    \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n    \"auditReference\" : \"audit://data-contract/contract-9c8f1a3b\",\n    \"schemaVersion\" : 3,\n    \"consumerHealth\" : [ {\n      \"compatibilityStatus\" : \"COMPATIBLE\",\n      \"consumerTeam\" : \"analytics-team\",\n      \"lastValidatedAt\" : 948603367000\n    }, {\n      \"compatibilityStatus\" : \"COMPATIBLE\",\n      \"consumerTeam\" : \"analytics-team\",\n      \"lastValidatedAt\" : 948603367000\n    } ],\n    \"enforcementLevel\" : \"BLOCK\",\n    \"producerService\" : \"payment-processor\",\n    \"violationStats\" : {\n      \"last30d\" : 1248,\n      \"last24h\" : 47,\n      \"topViolationType\" : \"MISSING_FIELD\",\n      \"topProducerViolating\" : \"payment-processor-legacy\",\n      \"last7d\" : 312\n    },\n    \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n    \"pendingBreakingChange\" : {\n      \"awaitingApproval\" : [ \"customer-dashboard-team\" ],\n      \"proposedSchemaVersion\" : 4,\n      \"approvedBy\" : [ \"analytics-team\", \"risk-team\" ],\n      \"proposedAt\" : 948603367000,\n      \"breakingChanges\" : [ \"Removing field 'discount_code'\", \"Changing type of 'amount' from double to float\" ]\n    },\n    \"schemaFormat\" : \"AVRO\",\n    \"piiFields\" : [ \"customerId\" ],\n    \"createdAt\" : 948603367000,\n    \"producerTeam\" : \"payments-team\",\n    \"clusterName\" : \"prod-kafka-us-east-1\",\n    \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n    \"topicName\" : \"payments.transactions.v1\",\n    \"status\" : \"ACTIVE\",\n    \"updatedAt\" : 948603367000\n  } ],\n  \"totalElements\" : 247,\n  \"totalPages\" : 13,\n  \"page\" : 0,\n  \"size\" : 20,\n  \"summary\" : {\n    \"totalViolations24h\" : 1543,\n    \"contractsWithViolations24h\" : 12,\n    \"topViolatingContract\" : \"payments.transactions.v1\",\n    \"active\" : 232,\n    \"pendingConsumerApproval\" : 3,\n    \"totalContracts\" : 247\n  }\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts?producerTeam=payments-team&consumerTeam=analytics-team&clusterName=prod-kafka-us-east-1&enforcementLevel=BLOCK&schemaFormat=AVRO&hasRecentViolations=true&page=1&size=1",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts" ],
+            "query" : [ {
+              "key" : "producerTeam",
+              "value" : "payments-team"
+            }, {
+              "key" : "consumerTeam",
+              "value" : "analytics-team"
+            }, {
+              "key" : "clusterName",
+              "value" : "prod-kafka-us-east-1"
+            }, {
+              "key" : "enforcementLevel",
+              "value" : "BLOCK"
+            }, {
+              "key" : "schemaFormat",
+              "value" : "AVRO"
+            }, {
+              "key" : "hasRecentViolations",
+              "value" : true
+            }, {
+              "key" : "page",
+              "value" : 1
+            }, {
+              "key" : "size",
+              "value" : 1
+            } ]
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-11-06T13:31:01.408933958Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Register a new data contract for a Kafka topic",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/contracts",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "contracts" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"topicName\" : \"payments.transactions.v1\",\n  \"clusterName\" : \"prod-kafka-us-east-1\",\n  \"schemaFormat\" : \"AVRO\",\n  \"schema\" : {\n    \"type\" : \"record\",\n    \"name\" : \"PaymentTransaction\",\n    \"namespace\" : \"com.forgesphere.payments\",\n    \"fields\" : [ {\n      \"name\" : \"transactionId\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"amount\",\n      \"type\" : \"double\"\n    }, {\n      \"name\" : \"currency\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"customerId\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"timestamp\",\n      \"type\" : \"long\"\n    } ]\n  },\n  \"schemaVersion\" : 3,\n  \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n  \"enforcementLevel\" : \"BLOCK\",\n  \"producerTeam\" : \"payments-team\",\n  \"producerService\" : \"payment-processor\",\n  \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n  \"piiFields\" : [ \"customerId\" ],\n  \"retentionPolicy\" : {\n    \"retentionDays\" : 365,\n    \"deletionMode\" : \"TOMBSTONE\"\n  },\n  \"notifyChannels\" : [ \"SLACK\" ]\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "Created",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"topicName\" : \"payments.transactions.v1\",\n  \"clusterName\" : \"prod-kafka-us-east-1\",\n  \"schemaFormat\" : \"AVRO\",\n  \"schema\" : {\n    \"type\" : \"record\",\n    \"name\" : \"PaymentTransaction\",\n    \"namespace\" : \"com.forgesphere.payments\",\n    \"fields\" : [ {\n      \"name\" : \"transactionId\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"amount\",\n      \"type\" : \"double\"\n    }, {\n      \"name\" : \"currency\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"customerId\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"timestamp\",\n      \"type\" : \"long\"\n    } ]\n  },\n  \"schemaVersion\" : 3,\n  \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n  \"enforcementLevel\" : \"BLOCK\",\n  \"producerTeam\" : \"payments-team\",\n  \"producerService\" : \"payment-processor\",\n  \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n  \"piiFields\" : [ \"customerId\" ],\n  \"retentionPolicy\" : {\n    \"retentionDays\" : 365,\n    \"deletionMode\" : \"TOMBSTONE\"\n  },\n  \"notifyChannels\" : [ \"SLACK\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Created",
+        "code" : 201,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"topicName\" : \"payments.transactions.v1\",\n  \"clusterName\" : \"prod-kafka-us-east-1\",\n  \"schemaFormat\" : \"AVRO\",\n  \"schema\" : {\n    \"key\" : \"\"\n  },\n  \"schemaVersion\" : 3,\n  \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n  \"enforcementLevel\" : \"BLOCK\",\n  \"status\" : \"ACTIVE\",\n  \"producerTeam\" : \"payments-team\",\n  \"producerService\" : \"payment-processor\",\n  \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n  \"piiFields\" : [ \"customerId\" ],\n  \"pendingBreakingChange\" : {\n    \"awaitingApproval\" : [ \"customer-dashboard-team\" ],\n    \"proposedSchemaVersion\" : 4,\n    \"approvedBy\" : [ \"analytics-team\", \"risk-team\" ],\n    \"proposedAt\" : 948603367000,\n    \"breakingChanges\" : [ \"Removing field 'discount_code'\", \"Changing type of 'amount' from double to float\" ]\n  },\n  \"violationStats\" : {\n    \"last30d\" : 1248,\n    \"last24h\" : 47,\n    \"topViolationType\" : \"MISSING_FIELD\",\n    \"topProducerViolating\" : \"payment-processor-legacy\",\n    \"last7d\" : 312\n  },\n  \"consumerHealth\" : [ {\n    \"compatibilityStatus\" : \"COMPATIBLE\",\n    \"consumerTeam\" : \"analytics-team\",\n    \"lastValidatedAt\" : 948603367000\n  }, {\n    \"compatibilityStatus\" : \"COMPATIBLE\",\n    \"consumerTeam\" : \"analytics-team\",\n    \"lastValidatedAt\" : 948603367000\n  } ],\n  \"createdAt\" : 948603367000,\n  \"updatedAt\" : 948603367000,\n  \"auditReference\" : \"audit://data-contract/contract-9c8f1a3b\"\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"topicName\" : \"payments.transactions.v1\",\n  \"clusterName\" : \"prod-kafka-us-east-1\",\n  \"schemaFormat\" : \"AVRO\",\n  \"schema\" : {\n    \"type\" : \"record\",\n    \"name\" : \"PaymentTransaction\",\n    \"namespace\" : \"com.forgesphere.payments\",\n    \"fields\" : [ {\n      \"name\" : \"transactionId\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"amount\",\n      \"type\" : \"double\"\n    }, {\n      \"name\" : \"currency\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"customerId\",\n      \"type\" : \"string\"\n    }, {\n      \"name\" : \"timestamp\",\n      \"type\" : \"long\"\n    } ]\n  },\n  \"schemaVersion\" : 3,\n  \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n  \"enforcementLevel\" : \"BLOCK\",\n  \"producerTeam\" : \"payments-team\",\n  \"producerService\" : \"payment-processor\",\n  \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n  \"piiFields\" : [ \"customerId\" ],\n  \"retentionPolicy\" : {\n    \"retentionDays\" : 365,\n    \"deletionMode\" : \"TOMBSTONE\"\n  },\n  \"notifyChannels\" : [ \"SLACK\" ]\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-11-06T13:31:01.410600489Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Get detailed information about a specific contract",
+      "request" : {
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/contracts/9c8f1a3b-6d7e-4a12-8f5e-123456789abc?includeViolationHistory=true",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "contracts", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc" ],
+          "query" : [ {
+            "key" : "includeViolationHistory",
+            "value" : true
+          } ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts/9c8f1a3b-6d7e-4a12-8f5e-123456789abc?includeViolationHistory=true",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc" ],
+            "query" : [ {
+              "key" : "includeViolationHistory",
+              "value" : true
+            } ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"topicName\" : \"payments.transactions.v1\",\n  \"clusterName\" : \"prod-kafka-us-east-1\",\n  \"schemaFormat\" : \"AVRO\",\n  \"schema\" : {\n    \"key\" : \"\"\n  },\n  \"schemaVersion\" : 3,\n  \"compatibilityMode\" : \"FULL_TRANSITIVE\",\n  \"enforcementLevel\" : \"BLOCK\",\n  \"status\" : \"ACTIVE\",\n  \"producerTeam\" : \"payments-team\",\n  \"producerService\" : \"payment-processor\",\n  \"consumerTeams\" : [ \"analytics-team\", \"risk-team\", \"customer-dashboard-team\" ],\n  \"piiFields\" : [ \"customerId\" ],\n  \"pendingBreakingChange\" : {\n    \"awaitingApproval\" : [ \"customer-dashboard-team\" ],\n    \"proposedSchemaVersion\" : 4,\n    \"approvedBy\" : [ \"analytics-team\", \"risk-team\" ],\n    \"proposedAt\" : 948603367000,\n    \"breakingChanges\" : [ \"Removing field 'discount_code'\", \"Changing type of 'amount' from double to float\" ]\n  },\n  \"violationStats\" : {\n    \"last30d\" : 1248,\n    \"last24h\" : 47,\n    \"topViolationType\" : \"MISSING_FIELD\",\n    \"topProducerViolating\" : \"payment-processor-legacy\",\n    \"last7d\" : 312\n  },\n  \"consumerHealth\" : [ {\n    \"compatibilityStatus\" : \"COMPATIBLE\",\n    \"consumerTeam\" : \"analytics-team\",\n    \"lastValidatedAt\" : 948603367000\n  }, {\n    \"compatibilityStatus\" : \"COMPATIBLE\",\n    \"consumerTeam\" : \"analytics-team\",\n    \"lastValidatedAt\" : 948603367000\n  } ],\n  \"createdAt\" : 948603367000,\n  \"updatedAt\" : 948603367000,\n  \"auditReference\" : \"audit://data-contract/contract-9c8f1a3b\"\n}"
+      }, {
+        "name" : "Not Found",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts/9c8f1a3b-6d7e-4a12-8f5e-123456789abc?includeViolationHistory=true",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc" ],
+            "query" : [ {
+              "key" : "includeViolationHistory",
+              "value" : true
+            } ]
+          }
+        },
+        "status" : "Not Found",
+        "code" : 404,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-11-06T13:31:01.411164622Z\",\n  \"status\" : 404,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    }, {
+      "name" : "Validate a message against the contract before publishing",
+      "request" : {
+        "method" : "POST",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/contracts/9c8f1a3b-6d7e-4a12-8f5e-123456789abc/validate",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "contracts", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc", "validate" ]
+        },
+        "body" : {
+          "mode" : "raw",
+          "raw" : "{\n  \"messagePayload\" : {\n    \"transactionId\" : \"txn-12345\",\n    \"amount\" : 149.99,\n    \"currency\" : \"USD\",\n    \"customerId\" : \"cust-789\",\n    \"timestamp\" : 1730810400000\n  },\n  \"messageKey\" : \"cust-789\",\n  \"producerService\" : \"payment-processor\",\n  \"producerInstance\" : \"payment-processor-pod-7f8b9c\",\n  \"schemaVersionOverride\" : 2\n}",
+          "options" : {
+            "raw" : {
+              "language" : "json"
+            }
+          }
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts/9c8f1a3b-6d7e-4a12-8f5e-123456789abc/validate",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc", "validate" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"messagePayload\" : {\n    \"transactionId\" : \"txn-12345\",\n    \"amount\" : 149.99,\n    \"currency\" : \"USD\",\n    \"customerId\" : \"cust-789\",\n    \"timestamp\" : 1730810400000\n  },\n  \"messageKey\" : \"cust-789\",\n  \"producerService\" : \"payment-processor\",\n  \"producerInstance\" : \"payment-processor-pod-7f8b9c\",\n  \"schemaVersionOverride\" : 2\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"validationId\" : \"b1a2c3d4-e5f6-7890-1234-567890abcdef\",\n  \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n  \"valid\" : false,\n  \"verdict\" : \"INVALID\",\n  \"validatedSchemaVersion\" : 3,\n  \"errors\" : [ {\n    \"field\" : \"customerId\",\n    \"violationType\" : \"MISSING_FIELD\",\n    \"actualType\" : \"actualType\",\n    \"expectedType\" : \"string\",\n    \"suggestedFix\" : \"Add 'customerId' to the payload before publishing.\",\n    \"message\" : \"Required field 'customerId' is missing from payload.\"\n  }, {\n    \"field\" : \"customerId\",\n    \"violationType\" : \"MISSING_FIELD\",\n    \"actualType\" : \"actualType\",\n    \"expectedType\" : \"string\",\n    \"suggestedFix\" : \"Add 'customerId' to the payload before publishing.\",\n    \"message\" : \"Required field 'customerId' is missing from payload.\"\n  } ],\n  \"warnings\" : [ \"Field 'discount_code' is deprecated and will be removed in v4.\" ],\n  \"evaluatedAt\" : 948603367000,\n  \"latencyMs\" : 3,\n  \"auditReference\" : \"audit://data-contract/validation-b1a2c3d4\"\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "POST",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/contracts/9c8f1a3b-6d7e-4a12-8f5e-123456789abc/validate",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "contracts", "9c8f1a3b-6d7e-4a12-8f5e-123456789abc", "validate" ]
+          },
+          "body" : {
+            "mode" : "raw",
+            "raw" : "{\n  \"messagePayload\" : {\n    \"transactionId\" : \"txn-12345\",\n    \"amount\" : 149.99,\n    \"currency\" : \"USD\",\n    \"customerId\" : \"cust-789\",\n    \"timestamp\" : 1730810400000\n  },\n  \"messageKey\" : \"cust-789\",\n  \"producerService\" : \"payment-processor\",\n  \"producerInstance\" : \"payment-processor-pod-7f8b9c\",\n  \"schemaVersionOverride\" : 2\n}",
+            "options" : {
+              "raw" : {
+                "language" : "json"
+              }
+            }
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-11-06T13:31:01.412500826Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    } ]
+  }, {
+    "name" : "Violations",
+    "item" : [ {
+      "name" : "List contract violations across all topics",
+      "request" : {
+        "method" : "GET",
+        "header" : [ {
+          "key" : "Authorization",
+          "value" : "Bearer {{bearerToken}}"
+        }, {
+          "key" : "Accept",
+          "value" : "application/json"
+        } ],
+        "url" : {
+          "raw" : "{{baseUrl}}/violations?contractId=9c8f1a3b-6d7e-4a12-8f5e-123456789abc&producerService=payment-processor&severity=CRITICAL&violationType=SCHEMA_MISMATCH&status=OPEN&fromDate=2026-11-06T13:31:01.412696369Z&toDate=2026-11-06T13:31:01.412715603Z&page=1&size=1",
+          "host" : [ "{{baseUrl}}" ],
+          "path" : [ "violations" ],
+          "query" : [ {
+            "key" : "contractId",
+            "value" : "9c8f1a3b-6d7e-4a12-8f5e-123456789abc"
+          }, {
+            "key" : "producerService",
+            "value" : "payment-processor"
+          }, {
+            "key" : "severity",
+            "value" : "CRITICAL"
+          }, {
+            "key" : "violationType",
+            "value" : "SCHEMA_MISMATCH"
+          }, {
+            "key" : "status",
+            "value" : "OPEN"
+          }, {
+            "key" : "fromDate",
+            "value" : "2026-11-06T13:31:01.412774972Z"
+          }, {
+            "key" : "toDate",
+            "value" : "2026-11-06T13:31:01.412788190Z"
+          }, {
+            "key" : "page",
+            "value" : 1
+          }, {
+            "key" : "size",
+            "value" : 1
+          } ]
+        }
+      },
+      "response" : [ {
+        "name" : "OK",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/violations?contractId=9c8f1a3b-6d7e-4a12-8f5e-123456789abc&producerService=payment-processor&severity=CRITICAL&violationType=SCHEMA_MISMATCH&status=OPEN&fromDate=2026-11-06T13:31:01.412696369Z&toDate=2026-11-06T13:31:01.412715603Z&page=1&size=1",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "violations" ],
+            "query" : [ {
+              "key" : "contractId",
+              "value" : "9c8f1a3b-6d7e-4a12-8f5e-123456789abc"
+            }, {
+              "key" : "producerService",
+              "value" : "payment-processor"
+            }, {
+              "key" : "severity",
+              "value" : "CRITICAL"
+            }, {
+              "key" : "violationType",
+              "value" : "SCHEMA_MISMATCH"
+            }, {
+              "key" : "status",
+              "value" : "OPEN"
+            }, {
+              "key" : "fromDate",
+              "value" : "2026-11-06T13:31:01.412774972Z"
+            }, {
+              "key" : "toDate",
+              "value" : "2026-11-06T13:31:01.412788190Z"
+            }, {
+              "key" : "page",
+              "value" : 1
+            }, {
+              "key" : "size",
+              "value" : 1
+            } ]
+          }
+        },
+        "status" : "OK",
+        "code" : 200,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"content\" : [ {\n    \"severity\" : \"CRITICAL\",\n    \"auditReference\" : \"audit://data-contract/violation-c1a2c3d4\",\n    \"producerInstance\" : \"payment-processor-legacy-pod-4d5e6f\",\n    \"resolvedAt\" : 948603367000,\n    \"producerService\" : \"payment-processor-legacy\",\n    \"resolvedBy\" : \"resolvedBy\",\n    \"occurrenceCount\" : 847,\n    \"acknowledgedBy\" : \"acknowledgedBy\",\n    \"affectedField\" : \"customerId\",\n    \"acknowledgedAt\" : 948603367000,\n    \"producerTeam\" : \"payments-team\",\n    \"samplePayload\" : {\n      \"transactionId\" : \"txn-12345\",\n      \"amount\" : 149.99\n    },\n    \"violationType\" : \"MISSING_FIELD\",\n    \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n    \"topicName\" : \"payments.transactions.v1\",\n    \"errorDetail\" : \"Required field 'customerId' missing from 847 messages in last hour.\",\n    \"lastOccurrenceAt\" : 948603367000,\n    \"detectedAt\" : 948603367000,\n    \"violationId\" : \"c1a2c3d4-e5f6-7890-1234-567890abcdef\",\n    \"status\" : \"OPEN\",\n    \"firstOccurrenceAt\" : 948603367000,\n    \"resolutionNotes\" : \"resolutionNotes\"\n  }, {\n    \"severity\" : \"CRITICAL\",\n    \"auditReference\" : \"audit://data-contract/violation-c1a2c3d4\",\n    \"producerInstance\" : \"payment-processor-legacy-pod-4d5e6f\",\n    \"resolvedAt\" : 948603367000,\n    \"producerService\" : \"payment-processor-legacy\",\n    \"resolvedBy\" : \"resolvedBy\",\n    \"occurrenceCount\" : 847,\n    \"acknowledgedBy\" : \"acknowledgedBy\",\n    \"affectedField\" : \"customerId\",\n    \"acknowledgedAt\" : 948603367000,\n    \"producerTeam\" : \"payments-team\",\n    \"samplePayload\" : {\n      \"transactionId\" : \"txn-12345\",\n      \"amount\" : 149.99\n    },\n    \"violationType\" : \"MISSING_FIELD\",\n    \"contractId\" : \"9c8f1a3b-6d7e-4a12-8f5e-123456789abc\",\n    \"topicName\" : \"payments.transactions.v1\",\n    \"errorDetail\" : \"Required field 'customerId' missing from 847 messages in last hour.\",\n    \"lastOccurrenceAt\" : 948603367000,\n    \"detectedAt\" : 948603367000,\n    \"violationId\" : \"c1a2c3d4-e5f6-7890-1234-567890abcdef\",\n    \"status\" : \"OPEN\",\n    \"firstOccurrenceAt\" : 948603367000,\n    \"resolutionNotes\" : \"resolutionNotes\"\n  } ],\n  \"totalElements\" : 1543,\n  \"totalPages\" : 78,\n  \"page\" : 0,\n  \"size\" : 20,\n  \"summary\" : {\n    \"acknowledged\" : 87,\n    \"resolved24h\" : 156,\n    \"topProducers\" : [ \"payment-processor-legacy\", \"checkout-service-v1\" ],\n    \"totalViolations\" : 1543,\n    \"warningCount\" : 1189,\n    \"criticalCount\" : 12,\n    \"open\" : 342,\n    \"errorCount\" : 342\n  }\n}"
+      }, {
+        "name" : "Bad Request",
+        "originalRequest" : {
+          "method" : "GET",
+          "header" : [ {
+            "key" : "Authorization",
+            "value" : "Bearer {{bearerToken}}"
+          }, {
+            "key" : "Accept",
+            "value" : "application/json"
+          } ],
+          "url" : {
+            "raw" : "{{baseUrl}}/violations?contractId=9c8f1a3b-6d7e-4a12-8f5e-123456789abc&producerService=payment-processor&severity=CRITICAL&violationType=SCHEMA_MISMATCH&status=OPEN&fromDate=2026-11-06T13:31:01.412696369Z&toDate=2026-11-06T13:31:01.412715603Z&page=1&size=1",
+            "host" : [ "{{baseUrl}}" ],
+            "path" : [ "violations" ],
+            "query" : [ {
+              "key" : "contractId",
+              "value" : "9c8f1a3b-6d7e-4a12-8f5e-123456789abc"
+            }, {
+              "key" : "producerService",
+              "value" : "payment-processor"
+            }, {
+              "key" : "severity",
+              "value" : "CRITICAL"
+            }, {
+              "key" : "violationType",
+              "value" : "SCHEMA_MISMATCH"
+            }, {
+              "key" : "status",
+              "value" : "OPEN"
+            }, {
+              "key" : "fromDate",
+              "value" : "2026-11-06T13:31:01.412774972Z"
+            }, {
+              "key" : "toDate",
+              "value" : "2026-11-06T13:31:01.412788190Z"
+            }, {
+              "key" : "page",
+              "value" : 1
+            }, {
+              "key" : "size",
+              "value" : 1
+            } ]
+          }
+        },
+        "status" : "Bad Request",
+        "code" : 400,
+        "_postman_previewlanguage" : "json",
+        "header" : [ {
+          "key" : "Content-Type",
+          "value" : "application/json"
+        } ],
+        "cookie" : [ ],
+        "body" : "{\n  \"timestamp\" : \"2026-11-06T13:31:01.413041316Z\",\n  \"status\" : 400,\n  \"code\" : \"request_failed\",\n  \"userMessage\" : \"Request failed\",\n  \"systemMessage\" : \"Sample error for documentation purposes\",\n  \"path\" : \"{{baseUrl}}\",\n  \"correlationId\" : \"sample-correlation-id\"\n}"
+      } ]
+    } ]
+  } ]
+}
